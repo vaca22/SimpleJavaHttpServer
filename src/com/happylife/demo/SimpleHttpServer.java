@@ -28,9 +28,6 @@ public class SimpleHttpServer {
 			this.port = port;
 			server = HttpServer.create(new InetSocketAddress(port), 0);
 			System.out.println("server started at " + port);
-			server.createContext("/", new Handlers.RootHandler());
-			server.createContext("/echoHeader", new Handlers.EchoHeaderHandler());
-			server.createContext("/echoGet", new Handlers.EchoGetHandler());
 			server.createContext("/echoPost", new Handlers.EchoPostHandler());
 			server.setExecutor(null);
 			server.start();
