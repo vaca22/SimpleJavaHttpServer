@@ -19,7 +19,7 @@ public class HttpServerTest {
     public static void RunServer() throws IOException {
         HttpServerProvider provider = HttpServerProvider.provider();
         HttpServer httpserver =provider.createHttpServer(new InetSocketAddress(8200), 100);//监听端口8200,能同时接受100个请求
-        httpserver.createContext("/ais", new TestResponseHandler());
+        httpserver.createContext("/upload", new TestResponseHandler());
         httpserver.setExecutor(null);
         httpserver.start();
         System.out.println("启动服务器");
@@ -34,29 +34,22 @@ public class HttpServerTest {
                 //设置服务端响应的编码格式，否则在客户端收到的可能是乱码
                 Headers responseHeaders = httpExchange.getResponseHeaders();
                 responseHeaders.set("Content-Type", "text/html;charset=utf-8");
-
+                System.out.println("启动服务器");
                 //在这里通过httpExchange获取客户端发送过来的消息
                 URI url = httpExchange.getRequestURI();
+                System.out.println("启动服务器"+url.getRawPath());
                 InputStream requestBody = httpExchange.getRequestBody();
-                int count = 0;
-                while (count == 0) {
-                    count = requestBody.available();
-                }
+                int count=100000;
                 byte[] b = new byte[count];
-                int readCount = 0; // 已经成功读取的字节的个数
-                while (readCount < count) {
-                    readCount += requestBody.read(b, readCount, count - readCount);
+                int readCount = 0;
+                while (true) {
+                    readCount += requestBody.read(b, readCount, 500);
+                    if(readCount>=count-500){
+                        break;
+                    }
                 }
-                System.out.println("请求数据"+ new String(b));
 
-                String response = "应答数据：测试成功";
-                httpExchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, response.getBytes("UTF-8").length);
-                OutputStream responseBody = httpExchange.getResponseBody();
-                OutputStreamWriter writer = new OutputStreamWriter(responseBody, "UTF-8");
-                /*写入返回的应答数据*/
-                writer.write(response);
-                writer.close();
-                responseBody.close();
+
             }
 
         }
