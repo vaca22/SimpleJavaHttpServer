@@ -2,10 +2,7 @@ package com.happylife.demo
 
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.io.UnsupportedEncodingException
+import java.io.*
 import java.net.URLDecoder
 
 object Handlers {
@@ -48,20 +45,26 @@ object Handlers {
             val requestedUri = he.requestURI
             val query = requestedUri.rawQuery
             parseQuery(query, parameters)
-            val fuckx = parameters["filename"]
+            val fuckx = parameters["filename"]!!
+            File(fuckx).delete()
             println(parameters)
             val fuckaaa = he.requestHeaders["filename"]!![0]
             println(fuckaaa)
-            val isr = InputStreamReader(he.requestBody, "utf-8")
-            val br = BufferedReader(isr)
-            val fuck = CharArray(1000)
-            while (br.read(fuck) > 0) {
-                println("fuck")
-            }
+            val isr =he.requestBody
+            val fuck = ByteArray(1000)
+            do {
+                val fa=isr.read(fuck)
+                if(fa==1000){
+                    File(fuckx).appendBytes(fuck)
+                }else{
+                    File(fuckx).appendBytes(fuck.copyOfRange(0,fa))
+                    break;
+                }
+            }while (true)
             println("fuckyou")
 
-            // send response
-            val response = "fuck"
+
+            val response = "ok"
             he.sendResponseHeaders(200, response.length.toLong())
             val os = he.responseBody
             os.write(response.toByteArray())
