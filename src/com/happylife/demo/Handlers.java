@@ -17,6 +17,7 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+
 public class Handlers {
 	public static class RootHandler implements HttpHandler {
 
@@ -30,45 +31,8 @@ public class Handlers {
 		}
 	}
 
-	public static class EchoHeaderHandler implements HttpHandler {
-
-		@Override
-		public void handle(HttpExchange he) throws IOException {
-			Headers headers = he.getRequestHeaders();
-			Set<Map.Entry<String, List<String>>> entries = headers.entrySet();
-			String response = "";
-			for (Map.Entry<String, List<String>> entry : entries)
-				response += entry.toString() + "\n";
-			he.sendResponseHeaders(200, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
-		}
-	}
-
-	public static class EchoGetHandler implements HttpHandler {
-
-		@Override
-		public void handle(HttpExchange he) throws IOException {
-			// parse request
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			URI requestedUri = he.getRequestURI();
-			String query = requestedUri.getRawQuery();
-			parseQuery(query, parameters);
-			// send response
-			String response = "";
-			for (String key : parameters.keySet())
-				response += key + " = " + parameters.get(key) + "\n";
-			he.sendResponseHeaders(200, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
-		}
-
-	}
 
 	public static class EchoPostHandler implements HttpHandler {
-
 		@Override
 		public void handle(HttpExchange he) throws IOException {
 			System.out.println("Served by /echoPost handler...");
@@ -76,17 +40,18 @@ public class Handlers {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			InputStreamReader isr = new InputStreamReader(he.getRequestBody(), "utf-8");
 			BufferedReader br = new BufferedReader(isr);
-			String query = br.readLine();
-			parseQuery(query, parameters);
+			char[] fuck=new char[1000];
+			while(br.read(fuck)>0){
+				System.out.println("fuck");
+			}
+			System.out.println("fuckyou");
+
 			// send response
-			String response = "";
-			for (String key : parameters.keySet())
-				response += key + " = " + parameters.get(key) + "\n";
+			String response = "fuck";
 			he.sendResponseHeaders(200, response.length());
 			OutputStream os = he.getResponseBody();
 			os.write(response.toString().getBytes());
 			os.close();
-
 		}
 	}
 
