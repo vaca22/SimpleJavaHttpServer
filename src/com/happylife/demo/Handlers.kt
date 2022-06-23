@@ -39,22 +39,16 @@ object Handlers {
     class EchoPostHandler : HttpHandler {
         @Throws(IOException::class)
         override fun handle(he: HttpExchange) {
-
-            //--------------url thing
-            val parameters: MutableMap<String?, String?> = HashMap()
-            val requestedUri = he.requestURI
-            val query = requestedUri.rawQuery
-            parseQuery(query, parameters)
-            val fuckx = parameters["filename"]!!
-            File(fuckx).delete()
-            println(parameters)
-            val fuckaaa = he.requestHeaders["filename"]!![0]
-            println(fuckaaa)
+            val fuckx = he.requestHeaders["filename"]!![0]
+            if(File(fuckx).exists()){
+                File(fuckx).delete()
+            }
+            println(fuckx)
             val isr =he.requestBody
-            val fuck = ByteArray(1000)
+            val fuck = ByteArray(16384)
             do {
                 val fa=isr.read(fuck)
-                if(fa==1000){
+                if(fa==16384){
                     File(fuckx).appendBytes(fuck)
                 }else{
                     File(fuckx).appendBytes(fuck.copyOfRange(0,fa))
