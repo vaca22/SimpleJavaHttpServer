@@ -48,14 +48,18 @@ object Handlers {
             val fuck = ByteArray(16384)
             do {
                 val fa=isr.read(fuck)
-                if(fa==16384){
-                    File(fuckx).appendBytes(fuck)
+                if(fa>0){
+                    if(fa==16384){
+                        File(fuckx).appendBytes(fuck)
+                    }else{
+                        File(fuckx).appendBytes(fuck.copyOfRange(0,fa))
+                    }
                 }else{
-                    File(fuckx).appendBytes(fuck.copyOfRange(0,fa))
+
                     break;
                 }
             }while (true)
-            println("fuckyou")
+
 
 
             val response = "ok"
