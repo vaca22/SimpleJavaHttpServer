@@ -45,11 +45,11 @@ object Handlers {
             }
             println(fuckx)
             val isr =he.requestBody
-            val fuck = ByteArray(16384)
+            val fuck = ByteArray(1000)
             do {
                 val fa=isr.read(fuck)
                 if(fa>0){
-                    if(fa==16384){
+                    if(fa==1000){
                         File(fuckx).appendBytes(fuck)
                     }else{
                         File(fuckx).appendBytes(fuck.copyOfRange(0,fa))
