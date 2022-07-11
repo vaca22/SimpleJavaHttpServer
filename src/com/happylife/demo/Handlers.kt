@@ -39,7 +39,7 @@ object Handlers {
     class EchoPostHandler : HttpHandler {
         @Throws(IOException::class)
         override fun handle(he: HttpExchange) {
-            val fuckx = he.requestHeaders["filename"]!![0]
+            val fuckx = "good"
             if(File(fuckx).exists()){
                 File(fuckx).delete()
             }
@@ -55,7 +55,6 @@ object Handlers {
                         File(fuckx).appendBytes(fuck.copyOfRange(0,fa))
                     }
                 }else{
-
                     break;
                 }
             }while (true)
